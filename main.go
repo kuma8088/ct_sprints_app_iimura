@@ -28,7 +28,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// hello worldという文字列をレスポンスとして返す
-	fmt.Fprintf(w, "API接続テストが成功しました")
+	fmt.Fprintf(w, "API接続テストが成功しました (v2)")
 }
 
 func TestHandler(w http.ResponseWriter, r *http.Request) {
