@@ -22,5 +22,26 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo Generating appspec.yaml...
+      - |
+        cat <<EOF > appspec.yaml
+        version: 0.0
+        Resources:
+          - TargetService:
+              Type: AWS::ECS::Service
+              Properties:
+                TaskDefinition: <TASK_DEFINITION>
+                LoadBalancerInfo:
+                  ContainerName: "$CONTAINER_NAME"
+                  ContainerPort: 80
+        Hooks:
+          - BeforeInstall: "LambdaFunctionToValidateBeforeInstall"
+          - AfterAllowTestTraffic: "sprints-deployment-hook"
+        EOF
+      - echo Generating taskdef.json...
+      - aws ecs describe-task-definition --task-definition sprints-api-task --query taskDefinition > taskdef.json
 artifacts:
-  files: imagedefinitions.json
+  files:
+    - imagedefinitions.json
+    - appspec.yaml
+    - taskdef.json
