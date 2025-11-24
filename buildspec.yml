@@ -39,7 +39,7 @@ phases:
           - AfterAllowTestTraffic: "sprints-deployment-hook"
         EOF
       - echo Generating taskdef.json...
-      - aws ecs describe-task-definition --task-definition sprints-api-task --query taskDefinition > taskdef.json
+      - aws ecs describe-task-definition --task-definition sprints-api-td --query taskDefinition > taskdef.json
 artifacts:
   files:
     - imagedefinitions.json
