@@ -35,7 +35,6 @@ phases:
                   ContainerName: "$CONTAINER_NAME"
                   ContainerPort: 80
         Hooks:
-          - BeforeInstall: "LambdaFunctionToValidateBeforeInstall"
           - AfterAllowTestTraffic: "sprints-deployment-hook"
         EOF
       - echo Generating taskdef.json...
